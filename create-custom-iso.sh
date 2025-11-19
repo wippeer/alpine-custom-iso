@@ -16,6 +16,8 @@ profile_${PROFILENAME}() {
                 done
         done
         apks="\$apks linux-firmware"
+        hostname="alpine"
+        apkovl="genapkovl-custom.sh"
 }
 EOF
 

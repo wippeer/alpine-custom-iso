@@ -28,6 +28,6 @@ RUN git clone --depth=1 --filter=blob:none \
 RUN abuild-keygen -i -a -n
 
 WORKDIR /home/builder/aports/scripts
-COPY --chown=builder:builder --chmod=0755 create-custom-iso.sh .
+COPY --chown=builder:builder --chmod=0755 create-custom-iso.sh genapkovl-custom.sh ./
 
 CMD ["./create-custom-iso.sh"]
