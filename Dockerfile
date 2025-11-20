@@ -28,6 +28,13 @@ RUN git clone --depth=1 --filter=blob:none \
 RUN abuild-keygen -i -a -n
 
 WORKDIR /home/builder/aports/scripts
-COPY --chown=builder:builder --chmod=0755 create-custom-iso.sh genapkovl-custom.sh ./
+COPY --chown=builder:builder --chmod=0755 profile/ ./
 
-CMD ["./create-custom-iso.sh"]
+CMD ["sh", "-c", "\
+    sh mkimage.sh \
+        --tag \"$ALPINE_VERSION\" \
+        --outdir /iso \
+        --arch x86_64 \
+        --repository https://dl-cdn.alpinelinux.org/alpine/v\"$ALPINE_VERSION\"/main \
+        --profile \"$PROFILENAME\" \
+    "]
