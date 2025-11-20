@@ -19,6 +19,41 @@ profile_${PROFILENAME}() {
         hostname="alpine"
         apkovl="genapkovl-custom.sh"
 }
+
+# Override grub_gen_config to add serial console support
+grub_gen_config() {
+        local _f _p _initrd
+        # Add serial terminal configuration for EFI boot
+        echo "serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"
+        echo "terminal_input serial console"
+        echo "terminal_output serial console"
+        echo "set timeout=1"
+        for _f in \$kernel_flavors; do
+                if [ -z "\${xen_params+set}" ]; then
+                        _initrd="/boot/initramfs-\$_f"
+                        for _p in \$initrd_ucode; do
+                                _initrd="\$_p \$_initrd"
+                        done
+
+                        cat <<- GRUBEOF
+
+                        menuentry "Linux \$_f" {
+                                linux   /boot/vmlinuz-\$_f \$initfs_cmdline \$kernel_cmdline
+                                initrd  \$_initrd
+                        }
+                        GRUBEOF
+                else
+                        cat <<- GRUBEOF
+
+                        menuentry "Xen/Linux \$_f" {
+                                multiboot2      /boot/xen.gz \${xen_params}
+                                module2         /boot/vmlinuz-\$_f \$initfs_cmdline \$kernel_cmdline
+                                module2         /boot/initramfs-\$_f
+                        }
+                        GRUBEOF
+                fi
+        done
+}
 EOF
 
 sh mkimage.sh --tag "$VERSION" \
