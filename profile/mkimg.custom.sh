@@ -2,6 +2,11 @@ profile_custom() {
 	profile_standard
 	kernel_cmdline="$kernel_cmdline console=ttyS0,115200"
 	syslinux_serial="0 115200"
+
+	# Packages to add/remove
+	apks_add=""
+	apks_remove="iw wpa_supplicant linux-firmware xtables-addons-lts"
+
 	local _k _a
 	for _k in $kernel_flavors; do
 		apks="$apks linux-$_k"
@@ -9,7 +14,22 @@ profile_custom() {
 			apks="$apks $_a-$_k"
 		done
 	done
-	apks="$apks linux-firmware"
+
+	local _new_apks="" _pkg _remove
+	for _pkg in $apks; do
+		_remove=0
+		for _unwanted in $apks_remove; do
+			if [ "$_pkg" = "$_unwanted" ]; then
+				_remove=1
+				break
+			fi
+		done
+		if [ $_remove -eq 0 ]; then
+			_new_apks="$_new_apks $_pkg"
+		fi
+	done
+	apks="$_new_apks $apks_add"
+
 	hostname="alpine"
 	apkovl="genapkovl-custom.sh"
 }

@@ -28,11 +28,11 @@ iface lo inet loopback
 
 auto eth0
 iface eth0 inet dhcp
-    post-up ip link set dev eth0 alias "provisioning"
+    #post-up ip link set dev eth0 alias "provisioning"
 
 auto eth1
 iface eth1 inet dhcp
-    post-up ip link set dev eth1 alias "management"
+    #post-up ip link set dev eth1 alias "management"
 EOF
 
 # sysinit
