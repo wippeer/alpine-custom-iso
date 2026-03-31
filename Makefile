@@ -1,4 +1,4 @@
-VERSION ?= 3.22
+VERSION ?= 3.23
 PROFILENAME ?= custom
 ISO := ./output/alpine-$(PROFILENAME)-$(VERSION)-x86_64.iso
 
