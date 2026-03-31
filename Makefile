@@ -13,8 +13,12 @@ test-iso:
 	@bash ./test-iso.sh "$(ISO)"
 	@sha256sum -b "$(ISO)" >"$(ISO).sha256"
 
+test-iso-uefi:
+	@bash ./test-iso.sh --uefi "$(ISO)"
+	@sha256sum -b "$(ISO)" >"$(ISO).sha256"
+
 clean:
 	rm -rf ./output
 	rm -f qemu.log qemu.pid
 
-.PHONY: build-container-image create-iso test-iso clean
+.PHONY: build-container-image create-iso test-iso test-iso-uefi clean
