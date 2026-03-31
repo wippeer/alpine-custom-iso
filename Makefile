@@ -1,13 +1,13 @@
 VERSION ?= 3.23
-PROFILENAME ?= custom
-ISO := ./output/alpine-$(PROFILENAME)-$(VERSION)-x86_64.iso
+PROFILE ?= custom
+ISO := ./output/alpine-$(PROFILE)-$(VERSION)-x86_64.iso
 
 build-container-image:
-	@docker build --build-arg ALPINE_VERSION=$(VERSION) . -t alpine-$(PROFILENAME)-iso
+	@docker build --build-arg ALPINE_VERSION=$(VERSION) . -t alpine-iso-build
 
 create-iso:
 	@mkdir -p output
-	@docker container run -it --rm -e ALPINE_VERSION=$(VERSION) -e PROFILENAME=$(PROFILENAME) --mount type=bind,source=./output,target=/iso --name="alpineiso" alpine-$(PROFILENAME)-iso
+	@docker container run -it --rm -e ALPINE_VERSION=$(VERSION) -e PROFILE=$(PROFILE) --mount type=bind,source=./output,target=/iso --name="alpineiso" alpine-iso-build
 
 test-iso:
 	@bash ./test-iso.sh "$(ISO)"

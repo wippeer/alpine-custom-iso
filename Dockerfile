@@ -36,5 +36,5 @@ CMD ["sh", "-c", "\
         --outdir /iso \
         --arch x86_64 \
         --repository https://dl-cdn.alpinelinux.org/alpine/v\"$ALPINE_VERSION\"/main \
-        --profile \"$PROFILENAME\" \
+        --profile \"$PROFILE\" \
     "]
