@@ -37,6 +37,7 @@ profile_libvirt_test() {
 # Override grub_gen_config to add serial console support for EFI boot
 grub_gen_config() {
 	local _f _p _initrd
+	echo "insmod serial"
 	echo "serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"
 	echo "terminal_input serial console"
 	echo "terminal_output serial console"
